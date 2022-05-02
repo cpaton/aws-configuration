@@ -391,6 +391,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@cdktf/provider-aws@npm:^7.0.42":
+  version: 7.0.42
+  resolution: "@cdktf/provider-aws@npm:7.0.42"
+  peerDependencies:
+    cdktf: ^0.10.3
+    constructs: ^10.0.0
+  checksum: 77b0ca5e2a11be5f7ddab5ab4b6f160211c2b4023c663ff87db660fd53d18f8ec0b3d77c076ba0f9ad9a08a8cdb31519421f70135ad401ac5c52a09ae64e4811
+  languageName: node
+  linkType: hard
+
+"@cdktf/provider-docker@npm:^0.7.36":
+  version: 0.7.36
+  resolution: "@cdktf/provider-docker@npm:0.7.36"
+  peerDependencies:
+    cdktf: ^0.10.3
+    constructs: ^10.0.0
+  checksum: e2f7b06a5df9210930427fa9a8f0afb5acac6687ecd7b119538a9bbd95f8f616394170e3b53487f5e9e69f375bc2ecc3333e34ff2ce1738440de382b5bf70a66
+  languageName: node
+  linkType: hard
+
 "@cspotcode/source-map-consumer@npm:0.8.0":
   version: 0.8.0
   resolution: "@cspotcode/source-map-consumer@npm:0.8.0"
@@ -1359,6 +1379,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "cdktf@workspace:."
   dependencies:
+    "@cdktf/provider-aws": ^7.0.42
+    "@cdktf/provider-docker": ^0.7.36
     "@types/jest": ^27.4.1
     "@types/node": ^17.0.31
     cdktf: ^0.10.3
