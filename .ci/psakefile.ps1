@@ -15,9 +15,13 @@ properties {
 Task default -Depends .print-configuration -description "Default entry point"
 Task aws-login -depends ".aws-login" -description "Ensures logged into AWS"
 Task synth -depends .print-configuration,.aws-login,.synth -description "Synthesizes the teraform scripts"
-Task plan-iam-core -depends .print-configuration,.aws-login,.plan-iam-core -description "Runs terraform plan for iam-core stack"
-Task deploy-iam-core -depends .print-configuration,.aws-login,.deploy-iam-core -description "Runs terraform deploy for iam-core stack"
-Task plan-terraform-state -depends .print-configuration,.aws-login,.plan-terraform-state -description "Runs terraform plan for terraform-state stack"
+
+$stacks = @('iam-core', 's3-backup', 'terraform-state')
+foreach ($stack in $stacks)
+{
+    Task "plan-$($stack)" -depends .print-configuration,.aws-login,".plan-$($stack)" -description "Runs terraform plan for $($stack) stack"
+    Task "deploy-$($stack)" -depends .print-configuration,.aws-login,".deploy-$($stack)" -description "Runs terraform deploy for $($stack) stack"
+}
 
 # Internal tasks not intended to be called directly
 
@@ -42,19 +46,18 @@ Task .synth {
     }
 }
 
-Task .plan-iam-core {
-    $script:tfStack = "iam-core"
-    Invoke-Task .plan
-}
-
-Task .deploy-iam-core {
-    $script:tfStack = "iam-core"
-    Invoke-Task .deploy
-}
-
-Task .plan-terraform-state {
-    $script:tfStack = "terraform-state"
-    Invoke-Task .plan
+foreach ($stack in $stacks) {
+    Invoke-Expression @"
+    Task ".plan-$($stack)" {
+        `$script:tfStack = '$($stack)'
+        Invoke-Task .plan
+    }
+    
+    Task ".deploy-$($stack)" {
+        `$script:tfStack = '$($stack)'
+        Invoke-Task .deploy
+    }
+"@
 }
 
 Task .plan {
